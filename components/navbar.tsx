@@ -19,9 +19,10 @@ export const Navbar = () => {
 				<NavbarBrand as="li" className="gap-3 max-w-fit">
 					<NextLink className="flex justify-start items-center gap-1" href="/">
 						<Image
+							radius="sm"
 							width={35}
 							alt="Talon Robotics"
-							src="https://avatars.githubusercontent.com/u/317972?s=400&u=c2252cc2db27faa8d207c6f2e1e32aebc7a88a6e&v=4"
+							src="/TalonLogo.png"
 						/>
 						<p className="font-bold text-inherit">Talon Robotics</p>
 					</NextLink>

@@ -5,6 +5,7 @@ export interface Team {
     autoNotesCollected: AutoNoteCollected[],
     autoNotesAttempted: NoteShot[],
     pickupLocation: PickupLocation,
+    amplify: number,
     ampPlayed: AmpPlayed,
     defense: boolean,
     defenseScale: DefenseRange,
@@ -21,20 +22,20 @@ export interface AutoNoteCollected {
 }
 
 export enum AutoNote {
-    Close0, // 0 is closet to wall / scoring table
-    Close1,
-    Close2,
-    Mid0,
-    Mid1,
-    Mid2,
-    Mid3,
-    Mid4
+    Close0 = "Close0", // 0 is closet to wall opposite of scoring table
+    Close1 = "Close1",
+    Close2 = "Close2",
+    Mid0 = "Mid0",
+    Mid1 = "Mid1",
+    Mid2 = "Mid2",
+    Mid3 = "Mid3",
+    Mid4 = "Mid4"
 }
 
 export interface NoteShot {
     time: number,
     made: boolean,
-    locationShot: FieldLocation,
+    locationShot: FieldLocation | undefined,
     locationScored: ScoreLocation
 }
 
@@ -58,7 +59,9 @@ export enum PickupLocation {
 }
 
 export enum AmpPlayed {
-    Amplify,
+    Send = "Send",
+    Accept = "Accept",
+    Reject = "Reject"
 }
 
 export enum DefenseRange {
@@ -88,4 +91,16 @@ export enum MicrophoneShot {
 export interface Park {
     succeed: boolean,
     away: boolean
+}
+
+export enum Alliance {
+    Red,
+    Blue
+}
+
+export enum AppState {
+    PreMatch,
+    Auto,
+    Teleop,
+    PostMatch
 }
