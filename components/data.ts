@@ -4,14 +4,15 @@ export interface Team {
     humanPlayerAmp: boolean,
     autoNotesCollected: AutoNoteCollected[],
     autoNotesAttempted: NoteShot[],
+    teleopShots: NoteShot[],
     pickupLocation: PickupLocation,
     amplify: number,
-    ampPlayed: AmpPlayed,
+    ampPlayed: AmpPlayed | null,
     defense: boolean,
-    defenseScale: DefenseRange,
+    defenseScale: DefenseRange | null,
     trap: boolean,
-    climb: Climb,
-    microphone: MicrophoneShot,
+    climb: Climb | false,
+    microphone: MicrophoneShot | null,
     park: Park,
     comments: string
 }
@@ -33,9 +34,9 @@ export enum AutoNote {
 }
 
 export interface NoteShot {
-    time: number,
+    time: number | null,
     made: boolean,
-    locationShot: FieldLocation | undefined,
+    locationShot: FieldLocation | null,
     locationScored: ScoreLocation
 }
 
@@ -53,6 +54,7 @@ export enum ScoreLocation {
 }
 
 export enum PickupLocation {
+    None = "None",
     Floor = "Floor",
     HumanPlayer = "Human Player",
     Both = "Both"
@@ -65,7 +67,6 @@ export enum AmpPlayed {
 }
 
 export enum DefenseRange {
-    NoDefense = "No Defense",
     Bad = "Bad",
     Okay = "Okay",
     Average = "Average",

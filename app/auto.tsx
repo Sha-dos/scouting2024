@@ -5,10 +5,10 @@ import {Button} from "@nextui-org/button";
 import {ShootPoint} from "@/components/shot";
 
 // @ts-ignore
-export const Auto = ({alliance, autoNotesCollected, updateAutoNotesCollected, autoNotesAttempted, updateAutoNotesAttempted, autoPark updateAutoPark}) => {
-        /*const [autoNotesCollected, setAutoNotesCollected] = useState<AutoNoteCollected[]>([]);
+export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempted, updateAutoPark}) => {
+        const [autoNotesCollected, setAutoNotesCollected] = useState<AutoNoteCollected[]>([]);
         const [autoNotesAttempted, setAutoNotesAttempted] = useState<NoteShot[]>([]);
-        const [autoPark, setAutoPark] = useState(false);*/
+        const [autoPark, setAutoPark] = useState(false);
 
         // Modal
         const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -48,8 +48,9 @@ export const Auto = ({alliance, autoNotesCollected, updateAutoNotesCollected, au
             setY(e.clientY);
         }
 
+        // All of these need to set in the fn itself, and in the page, cant use the value to set it, must create new
         const handleShotPoint = (made: boolean, amp: boolean) => {
-           !amp ? setAutoNotesAttempted(prevState => [...prevState, {
+            let value = !amp ? {
                 time: time,
                 made: made,
                 locationShot: {
@@ -59,18 +60,26 @@ export const Auto = ({alliance, autoNotesCollected, updateAutoNotesCollected, au
                     angle: 0
                 },
                 locationScored: ScoreLocation.Speaker
-            }]) : setAutoNotesAttempted(prevState => [...prevState, {
+            } : {
                 time: time,
                 made: made,
-                locationShot: undefined,
+                locationShot: null,
                 locationScored: ScoreLocation.Amp
-            }])
+            };
+
+            setAutoNotesAttempted(prevState => [
+                ...prevState, value
+            ]);
+
+            updateAutoNotesAttempted(value);
         }
 
         const handleCollect = (location: AutoNote) => {
             setAutoNotesCollected(prevState => [
                 ...prevState, { time: time, location: location }
-            ])
+            ]);
+
+            updateAutoNotesCollected({ time: time, location: location });
         }
 
         return (
@@ -116,12 +125,12 @@ export const Auto = ({alliance, autoNotesCollected, updateAutoNotesCollected, au
 
                     <div className="flex flex-col gap-4">
                         <Button color="primary" variant="bordered" onPress={() => handleShotPoint(true, true)}>Amp</Button>
-                        <Button color="primary" variant="bordered" onPress={() => setAutoPark(true)}>Park</Button>
+                        <Button color="primary" variant="bordered" onPress={() => {setAutoPark(true); updateAutoPark(autoPark)}}>Park</Button>
                     </div>
 
                     {/*<div className="flex flex-col gap-16">
                         <a className="font-mono">Notes Grabbed:</a>
-                        <a className="font-mono">{autoNotesCollected ? autoNotesCollected?.map((collected, index) => {
+                        <a className="font-mono">{autoNotesCollected.length > 0 ? autoNotesCollected?.map((collected, index) => {
                             return(<><a>{index + ". " + collected.location + " @ " + collected.time} <br/></a></>);
                         }) : "No Notes Grabbed"}</a>
                     </div>*/}
@@ -131,7 +140,7 @@ export const Auto = ({alliance, autoNotesCollected, updateAutoNotesCollected, au
                             return (
                                 <>
                                     {
-                                        attempt.locationShot ? <ShootPoint made={attempt.made} x={attempt.locationShot.x} y={attempt.locationShot.y} /> : <></>
+                                        attempt.locationShot ? <ShootPoint made={attempt.made} x={attempt.locationShot.x} y={attempt.locationShot.y} /> : <a>No Shots Made</a>
                                     }
                                     {/*<a className="font-mono">{index + ". " + attempt.made + " " + attempt.locationScored.toString() + " @ " + attempt.time} <br/> </a>*/}
                                 </>
