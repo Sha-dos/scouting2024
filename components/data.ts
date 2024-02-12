@@ -63,7 +63,8 @@ export enum PickupLocation {
 export enum AmpPlayed {
     Send = "Send",
     Accept = "Accept",
-    Reject = "Reject"
+    Reject = "Reject",
+    None = "None"
 }
 
 export enum DefenseRange {
@@ -75,23 +76,26 @@ export enum DefenseRange {
 }
 
 export enum Climb {
-    Attempted = "Attempted",
+    Failed = "Failed",
     Solo = "Solo",
     Double = "Double",
-    Triple = "Triple"
+    Triple = "Triple",
+    None = "None"
 }
 
 export enum MicrophoneShot {
-    DidNotAttempt = "Did Not Attempt",
+    DidNotAttempt = "None",
     Failed = "Failed",
     First = "First",
     Second = "Second",
     Third = "Third"
 }
 
-export interface Park {
-    succeed: boolean,
-    away: boolean
+export enum Park {
+    Dangerous = "Dangerous",
+    Good = "Good",
+    Failed = "Failed",
+    None = "None"
 }
 
 export enum Alliance {

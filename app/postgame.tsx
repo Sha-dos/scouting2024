@@ -1,7 +1,7 @@
 import {Button} from "@nextui-org/button";
 import {Checkbox} from "@nextui-org/checkbox";
 import React, {useState} from "react";
-import {Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Slider} from "@nextui-org/react";
+import {Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Select, SelectItem, Slider} from "@nextui-org/react";
 import {PickupLocation} from "@/components/data";
 import {Textarea} from "@nextui-org/input";
 
@@ -11,6 +11,17 @@ export const PostGame = ({updateDefense, updatePickupLocation, updateDefenseScal
     const [pickupLocation, setPickupLocation] = useState(PickupLocation.None);
     const [defenseScale, setDefenseScale] = useState<number | number[]>(2);
     const [comments, setComments] = useState("");
+
+    const handlePickupChange = (e) => {
+        setPickupLocation(e.target.value)
+    }
+
+    const pickupLocationList = [
+        PickupLocation.None,
+        PickupLocation.Floor,
+        PickupLocation.HumanPlayer,
+        PickupLocation.Both,
+    ]
 
     return (
         <>
@@ -54,30 +65,20 @@ export const PostGame = ({updateDefense, updatePickupLocation, updateDefenseScal
                 className="max-w-md"
             />
 
-            <Dropdown>
-                <DropdownTrigger>
-                    <Button variant="bordered" color="primary">
-                        Pickup Location
-                    </Button>
-                </DropdownTrigger>
-                <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem onPress={() => {setPickupLocation(PickupLocation.None); updatePickupLocation(PickupLocation.None)}} className={
-                        pickupLocation == PickupLocation.None ? "text-success" : "text-primary"
-                    } key="accept">None</DropdownItem>
-
-                    <DropdownItem onPress={() => {setPickupLocation(PickupLocation.Floor); updatePickupLocation(PickupLocation.Floor)}} className={
-                        pickupLocation == PickupLocation.Floor ? "text-success" : "text-primary"
-                    } key="accept">Floor</DropdownItem>
-
-                    <DropdownItem onPress={() => {setPickupLocation(PickupLocation.HumanPlayer); updatePickupLocation(PickupLocation.HumanPlayer)}} className={
-                        pickupLocation == PickupLocation.HumanPlayer ? "text-success" : "text-primary"
-                    } key="accept">Human Player</DropdownItem>
-
-                    <DropdownItem onPress={() => {setPickupLocation(PickupLocation.Both); updatePickupLocation(PickupLocation.Both)}} className={
-                        pickupLocation == PickupLocation.Both ? "text-success" : "text-primary"
-                    } key="accept">Both</DropdownItem>
-                </DropdownMenu>
-            </Dropdown>
+            <Select
+                label="Pickup"
+                variant="bordered"
+                placeholder="Select"
+                selectedKeys={[pickupLocation]}
+                className="max-w-xs"
+                onChange={handlePickupChange}
+            >
+                {pickupLocationList.map((loc) => (
+                    <SelectItem key={loc} value={loc}>
+                        {loc}
+                    </SelectItem>
+                ))}
+            </Select>
 
             <Textarea
                 variant="underlined"

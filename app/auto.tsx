@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react"
-import {Image, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/react"
+import {Checkbox, Image, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/react"
 import {Alliance, AutoNote, AutoNoteCollected, NoteShot, ScoreLocation} from "@/components/data";
 import {Button} from "@nextui-org/button";
 import {ShootPoint} from "@/components/shot";
@@ -9,6 +9,7 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
         const [autoNotesCollected, setAutoNotesCollected] = useState<AutoNoteCollected[]>([]);
         const [autoNotesAttempted, setAutoNotesAttempted] = useState<NoteShot[]>([]);
         const [autoPark, setAutoPark] = useState(false);
+        const [ampShots, setAmpShots] = useState(0);
 
         // Modal
         const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -67,6 +68,8 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
                 locationScored: ScoreLocation.Amp
             };
 
+            if (amp) { setAmpShots(prevState => prevState + 1); }
+
             setAutoNotesAttempted(prevState => [
                 ...prevState, value
             ]);
@@ -74,12 +77,27 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
             updateAutoNotesAttempted(value);
         }
 
-        const handleCollect = (location: AutoNote) => {
-            setAutoNotesCollected(prevState => [
-                ...prevState, { time: time, location: location }
+        const handleCollect = (note: AutoNote) => {
+            const existingIndex = autoNotesCollected.findIndex(item => item.location === note);
+
+            if (existingIndex !== -1) {
+
+                // If the note is already selected, remove it
+                setAutoNotesCollected(prevNotes => [
+                    ...prevNotes.slice(0, existingIndex),
+                    ...prevNotes.slice(existingIndex + 1)
+                ]);
+                updateAutoNotesCollected(null, true, existingIndex);
+            } else {
+
+                // If the note is not selected, add it
+                setAutoNotesCollected(prevNotes => [
+                ...prevNotes,
+                { time: time, location: note }
             ]);
 
-            updateAutoNotesCollected({ time: time, location: location });
+            updateAutoNotesCollected({time: time, location: note}, false, existingIndex);
+          }
         }
 
         return (
@@ -92,13 +110,15 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
                     setAutoPark(false)
                 }}>Clear</Button>*/}
                 <div className="flex justify-center gap-4">
-                    <div className="flex flex-col gap-16">
-                        <Button color="primary" variant="bordered" onPress={() => handleCollect(AutoNote.Mid4)}>Grab</Button>
-                        <Button color="primary" variant="bordered" onPress={() => handleCollect(AutoNote.Mid3)}>Grab</Button>
-                        <Button color="primary" variant="bordered" onPress={() => handleCollect(AutoNote.Mid2)}>Grab</Button>
-                        <Button color="primary" variant="bordered" onPress={() => handleCollect(AutoNote.Mid1)}>Grab</Button>
-                        <Button color="primary" variant="bordered" onPress={() => handleCollect(AutoNote.Mid0)}>Grab</Button>
+                    <div className="flex flex-col gap-20">
+                        <Checkbox isSelected={autoNotesCollected.some(item => item.location === AutoNote.Mid4)} onValueChange={() => handleCollect(AutoNote.Mid4)}></Checkbox>
+                        <Checkbox isSelected={autoNotesCollected.some(item => item.location === AutoNote.Mid3)} onValueChange={() => handleCollect(AutoNote.Mid3)}></Checkbox>
+                        <Checkbox isSelected={autoNotesCollected.some(item => item.location === AutoNote.Mid2)} onValueChange={() => handleCollect(AutoNote.Mid2)}></Checkbox>
+                        <Checkbox isSelected={autoNotesCollected.some(item => item.location === AutoNote.Mid1)} onValueChange={() => handleCollect(AutoNote.Mid1)}></Checkbox>
+                        <Checkbox isSelected={autoNotesCollected.some(item => item.location === AutoNote.Mid0)} onValueChange={() => handleCollect(AutoNote.Mid0)}></Checkbox>
                     </div>
+
+                    <a>{autoNotesCollected.map(note => (note.location))}</a>
 
                     <Image onClick={(e) => {handleClick(e); onOpen()}} width={450} src={alliance == Alliance.Red ? "./Red.png" : "./Blue.png"} alt={"Field"} />
 
@@ -108,11 +128,11 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
                                 <>
                                     <ModalHeader className="flex flex-col gap-1 justify-center">Made the shot?</ModalHeader>
                                     <ModalBody>
-                                        <Button color="primary" variant="bordered" onPress={() => {
+                                        <Button variant="bordered" onPress={() => {
                                             onClose();
                                             handleShotPoint(true, false);
                                         }}>Yes</Button>
-                                        <Button color="primary" variant="bordered" onPress={() => {
+                                        <Button variant="bordered" onPress={() => {
                                             onClose();
                                             handleShotPoint(false, false);
                                         }}>No</Button>
@@ -124,8 +144,10 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
                     </Modal>
 
                     <div className="flex flex-col gap-4">
-                        <Button color="primary" variant="bordered" onPress={() => handleShotPoint(true, true)}>Amp</Button>
-                        <Button color="primary" variant="bordered" onPress={() => {setAutoPark(true); updateAutoPark(autoPark)}}>Park</Button>
+                        <Button variant="bordered" onPress={() => handleShotPoint(true, true)}>
+                            {"Amp: " + ampShots}
+                        </Button>
+                        <Checkbox isSelected={autoPark} onValueChange={setAutoPark}>Park</Checkbox>
                     </div>
 
                     {/*<div className="flex flex-col gap-16">
@@ -140,7 +162,7 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
                             return (
                                 <>
                                     {
-                                        attempt.locationShot ? <ShootPoint made={attempt.made} x={attempt.locationShot.x} y={attempt.locationShot.y} /> : <a>No Shots Made</a>
+                                        attempt.locationShot ? <ShootPoint made={attempt.made} x={attempt.locationShot.x} y={attempt.locationShot.y} /> : <></>
                                     }
                                     {/*<a className="font-mono">{index + ". " + attempt.made + " " + attempt.locationScored.toString() + " @ " + attempt.time} <br/> </a>*/}
                                 </>

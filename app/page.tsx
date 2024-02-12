@@ -1,7 +1,7 @@
 'use client';
 
 import {getDatabase, ref, set} from "@firebase/database";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Pregame} from "./pregame"
 import {Auto} from "./auto"
 import {
@@ -9,11 +9,12 @@ import {
 	AmpPlayed,
 	AppState,
 	AutoNoteCollected,
-	Climb, DefenseRange,
+	Climb,
+	DefenseRange,
 	MicrophoneShot,
 	NoteShot,
 	Park,
-	PickupLocation, Team
+	PickupLocation
 } from "@/components/data";
 import {Button} from "@nextui-org/button";
 import {Teleop} from "@/app/teleop";
@@ -36,7 +37,7 @@ export default function Home() {
 
 	// Teleop
 	const [notesAttempted, setNotesAttempted] = useState<NoteShot[]>([]);
-	const [park, setPark] = useState<Park>({succeed: false, away: false});
+	const [park, setPark] = useState<Park>(Park.None);
 	const [ampPlayed, setAmpPlayed] = useState<AmpPlayed | null>(null);
 	const [microphone, setMicrophone] = useState<MicrophoneShot | null>(null);
 	const [climb, setClimb] = useState<Climb | false>(false);
@@ -55,8 +56,18 @@ export default function Home() {
 		setAutoNotesAttempted(prevState => [...prevState, thisAutoNotesAttempted]);
 	}
 
-	const updateAutoNotesCollected = (thisAutoNotesCollected: AutoNoteCollected) => {
-		setAutoNotesCollected(prevState => [...prevState, thisAutoNotesCollected]);
+	const updateAutoNotesCollected = (note: AutoNoteCollected, already: boolean, existingIndex: number) => {
+     if (already) {
+      setAutoNotesCollected(prevNotes => [
+            ...prevNotes.slice(0, existingIndex),
+           ...prevNotes.slice(existingIndex + 1)
+          ]);
+    } else {
+      setAutoNotesCollected(prevNotes => [
+            ...prevNotes,
+            note
+          ]);
+    }
 	}
 
 	const updateAutoPark = (thisAutoPark: boolean) => {
@@ -114,7 +125,7 @@ export default function Home() {
 	function upload() {
 		const db = getDatabase();
 
-		set(ref(db, 'matches/' + matchNumber + '/' + teamNumber), {
+		set(ref(db, 'data/' + matchNumber + '/teams/' + teamNumber), {
 			ampPlayed: ampPlayed,
 			amplify: amplify,
 			autoNotesAttempted: autoNotesAttempted,
@@ -146,14 +157,14 @@ export default function Home() {
 		setMatchNumber("");
 		setTeamNumber("");
 		setNotesAttempted([]);
-		setPark({succeed: false, away: false});
+		setPark(Park.None);
 		setAmpPlayed(null);
 		setMicrophone(null);
 		setClimb(false);
 		setTrap(false);
 		setAmplify(0);
 		setDefense(false);
-		setDefenseScale(0);
+		setDefenseScale(null);
 		setComments("");
 		setPickupLocation(PickupLocation.None);
 	}
@@ -196,12 +207,15 @@ export default function Home() {
 		case AppState.PostMatch:
 			return (
 				<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-					<Button color="danger" variant="bordered" onPress={() => {
-						setState(AppState.PreMatch);
-						download();
-						upload();
-						clear();
-					}}>Next Match</Button>
+					<div className="flex gap-4">
+						<Button color="danger" variant="bordered" onPress={() => setState(AppState.Teleop)}>Back</Button>
+						<Button color="danger" variant="bordered" onPress={() => {
+							setState(AppState.PreMatch);
+							download();
+							upload();
+							clear();
+						}}>Next Match</Button>
+					</div>
 					<PostGame updateDefense={updateDefense} updatePickupLocation={updatePickupLocation} updateDefenseScale={updateDefenseScale}
 							  updateComments={updateComments} />
 				</section>
