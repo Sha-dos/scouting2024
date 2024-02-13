@@ -1,19 +1,24 @@
-export interface Team {
-    number: string,
-    autoPark: boolean,
+export interface Data {
+    matches: TeamMatchData[]
+}
+
+export interface TeamMatchData {
+    teamNumber: number,
+    matchNumber: number,
     humanPlayerAmp: boolean,
-    autoNotesCollected: AutoNoteCollected[],
     autoNotesAttempted: NoteShot[],
-    teleopShots: NoteShot[],
-    pickupLocation: PickupLocation,
-    amplify: number,
-    ampPlayed: AmpPlayed | null,
-    defense: boolean,
-    defenseScale: DefenseRange | null,
-    trap: boolean,
-    climb: Climb | false,
-    microphone: MicrophoneShot | null,
+    autoNotesCollected: AutoNoteCollected[],
+    autoPark: boolean,
+    notesAttempted: NoteShot[],
     park: Park,
+    ampPlayed: AmpPlayed,
+    microphone: MicrophoneShot,
+    climb: Climb,
+    trap: boolean,
+    amplify: number,
+    defense: boolean,
+    pickupLocation: PickupLocation,
+    defenseScale: DefenseRange,
     comments: string
 }
 

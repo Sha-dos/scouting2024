@@ -9,16 +9,17 @@ import {
 	AmpPlayed,
 	AppState,
 	AutoNoteCollected,
-	Climb,
+	Climb, Data,
 	DefenseRange,
 	MicrophoneShot,
 	NoteShot,
 	Park,
-	PickupLocation
+	PickupLocation,
 } from "@/components/data";
 import {Button} from "@nextui-org/button";
 import {Teleop} from "@/app/teleop";
 import {PostGame} from "@/app/postgame";
+import {readData, writeData} from "@/components/filesystem";
 
 export default function Home() {
 	const [state, setState] = useState(AppState.PreMatch);
@@ -57,17 +58,17 @@ export default function Home() {
 	}
 
 	const updateAutoNotesCollected = (note: AutoNoteCollected, already: boolean, existingIndex: number) => {
-     if (already) {
-      setAutoNotesCollected(prevNotes => [
-            ...prevNotes.slice(0, existingIndex),
-           ...prevNotes.slice(existingIndex + 1)
-          ]);
-    } else {
-      setAutoNotesCollected(prevNotes => [
-            ...prevNotes,
-            note
-          ]);
-    }
+     	if (already) {
+      		setAutoNotesCollected(prevNotes => [
+            	...prevNotes.slice(0, existingIndex),
+           		...prevNotes.slice(existingIndex + 1)
+          	]);
+    	} else {
+      		setAutoNotesCollected(prevNotes => [
+            	...prevNotes,
+            	note
+          	]);
+    	}
 	}
 
 	const updateAutoPark = (thisAutoPark: boolean) => {
@@ -123,7 +124,7 @@ export default function Home() {
 	}
 
 	function upload() {
-		const db = getDatabase();
+		/*const db = getDatabase();
 
 		set(ref(db, 'data/' + matchNumber + '/teams/' + teamNumber), {
 			ampPlayed: ampPlayed,
@@ -140,13 +141,45 @@ export default function Home() {
 			number: teamNumber,
 			park: park,
 			pickupLocation: pickupLocation,
-			teleopShots: notesAttempted,
+			notesAttempted: notesAttempted,
 			trap: trap
-		});
+		});*/
 	}
 
 	function download() {
-		// todo impl
+		let data = {
+			matches: [{
+				matchNumber: matchNumber,
+				teamNumber: teamNumber,
+				ampPlayed: ampPlayed,
+				amplify: amplify,
+				autoNotesAttempted: autoNotesAttempted,
+				autoNotesCollected: autoNotesCollected,
+				autoPark: autoPark,
+				climb: climb,
+				comments: comments,
+				defense: defense,
+				defenseScale: defenseScale,
+				humanPlayerAmp: humanPlayerAmp,
+				microphone: microphone,
+				number: teamNumber,
+				park: park,
+				pickupLocation: pickupLocation,
+				notesAttempted: notesAttempted,
+				trap: trap
+			}]}
+
+		readData().then(value => {
+			console.log(value.length);
+			if (value.length != 0) {
+				console.log("parsing")
+				let parsed: Data = JSON.parse(value);
+				parsed.matches.push(data.matches[0]);
+				writeData(JSON.stringify(parsed));
+			} else {
+				writeData(JSON.stringify(data));
+			}
+		});
 	}
 
 	function clear() {
