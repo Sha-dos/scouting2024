@@ -11,6 +11,7 @@ import { siteConfig } from "@/config/site";
 import NextLink from "next/link";
 import clsx from "clsx";
 import {Image} from "@nextui-org/image";
+import {Button} from "@nextui-org/button";
 
 export const Navbar = () => {
 	return (
@@ -43,6 +44,18 @@ export const Navbar = () => {
 						</NavbarItem>
 					))}
 				</ul>
+
+				<NavbarContent as="div" justify="end">
+					<Button variant="bordered" isIconOnly={true}>
+						<Image
+							src="/cog-outline.svg"
+							width={35}
+							height={35}
+							alt="settings"
+							className="accent-white"
+							/>
+					</Button>
+				</NavbarContent>
 			</NavbarContent>
 
 
