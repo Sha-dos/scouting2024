@@ -23,7 +23,7 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
 
-    const handleClick = (e: MouseEvent) => {
+    const handleClick = (e: React.MouseEvent<HTMLImageElement>) => {
         setX(e.clientX);
         setY(e.clientY);
     }
@@ -65,21 +65,25 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
         updateNotesAttempted(value);
     }
 
+    // @ts-ignore
     const handleMicrophoneChange = (e) => {
         setMicrophone(e.target.value);
         updateMicrophone(e.target.value);
     };
 
+    // @ts-ignore
     const handleAmpChange = (e) => {
         setAmpPlayed(e.target.value);
         updateAmpPlayed(e.target.value);
     };
 
+    // @ts-ignore
     const handleClimbChange = (e) => {
         setClimb(e.target.value);
         updateClimb(e.target.value);
     };
 
+    // @ts-ignore
     const handleParkChange = (e) => {
         setPark(e.target.value);
         updatePark(e.target.value);

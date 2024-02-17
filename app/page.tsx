@@ -1,6 +1,5 @@
 'use client';
 
-import {getDatabase, ref, set} from "@firebase/database";
 import React, {useState} from "react";
 import {Pregame} from "./pregame"
 import {Auto} from "./auto"
@@ -9,17 +8,18 @@ import {
 	AmpPlayed,
 	AppState,
 	AutoNoteCollected,
-	Climb, Data,
+	Climb,
 	DefenseRange,
 	MicrophoneShot,
 	NoteShot,
 	Park,
 	PickupLocation,
+	Station,
 } from "@/components/data";
 import {Button} from "@nextui-org/button";
 import {Teleop} from "@/app/teleop";
 import {PostGame} from "@/app/postgame";
-import {readData, writeData} from "@/components/filesystem";
+import {getDatabase, ref, set} from "@firebase/database";
 
 export default function Home() {
 	const [state, setState] = useState(AppState.PreMatch);
@@ -30,6 +30,7 @@ export default function Home() {
 	const [teamNumber, setTeamNumber] = useState("");
 	const [matchNumber, setMatchNumber] = useState("");
 	const [humanPlayerAmp, setHumanPlayerAmp] = useState(false);
+	const [station, setStation] = useState<Station>(Station.Red1);
 
 	// Auto
 	const [autoNotesAttempted, setAutoNotesAttempted] = useState<NoteShot[]>([]);
@@ -123,8 +124,33 @@ export default function Home() {
 		setDefenseScale(thisDefenseScale);
 	}
 
+	const updateAlliance = (sta: Station) => {
+		setStation(sta);
+
+		switch (sta) {
+			case Station.Red1:
+				setAlliance(Alliance.Red)
+				break
+			case Station.Red2:
+				setAlliance(Alliance.Red)
+				break
+			case Station.Red3:
+				setAlliance(Alliance.Red)
+				break
+			case Station.Blue1:
+				setAlliance(Alliance.Blue)
+				break
+			case Station.Blue2:
+				setAlliance(Alliance.Blue)
+				break
+			case Station.Blue3:
+				setAlliance(Alliance.Blue)
+				break
+		}
+	}
+
 	function upload() {
-		/*const db = getDatabase();
+		const db = getDatabase();
 
 		set(ref(db, 'data/' + matchNumber + '/teams/' + teamNumber), {
 			ampPlayed: ampPlayed,
@@ -143,7 +169,7 @@ export default function Home() {
 			pickupLocation: pickupLocation,
 			notesAttempted: notesAttempted,
 			trap: trap
-		});*/
+		});
 	}
 
 	function download() {
@@ -169,17 +195,18 @@ export default function Home() {
 				trap: trap
 			}]}
 
-		readData().then(value => {
-			console.log(value.length);
-			if (value.length != 0) {
+		/*readData().then(value => {
+			//console.log(value.length);
+			if (value.length && value.length != 0) {
 				console.log("parsing")
 				let parsed: Data = JSON.parse(value);
+				// @ts-ignore
 				parsed.matches.push(data.matches[0]);
 				writeData(JSON.stringify(parsed));
 			} else {
 				writeData(JSON.stringify(data));
 			}
-		});
+		});*/
 	}
 
 	function clear() {
@@ -208,7 +235,7 @@ export default function Home() {
 				<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
 					<Button color="danger" variant="bordered" onPress={() => setState(AppState.Auto)}>Auto</Button>
 					<Pregame matchNumber={matchNumber} setMatchNumber={setMatchNumber} teamNumber={teamNumber} setTeamNumber={setTeamNumber}
-							 humanPlayerAmp={humanPlayerAmp} setHumanPlayerAmp={setHumanPlayerAmp} />
+							 humanPlayerAmp={humanPlayerAmp} setHumanPlayerAmp={setHumanPlayerAmp} updateAlliance={updateAlliance} station={station} />
 				</section>
 			)
 

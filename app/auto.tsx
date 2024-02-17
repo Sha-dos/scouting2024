@@ -44,7 +44,7 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
         const [x, setX] = useState(0);
         const [y, setY] = useState(0);
 
-        const handleClick = (e: MouseEvent) => {
+        const handleClick = (e: React.MouseEvent<HTMLImageElement>) => {
             setX(e.clientX);
             setY(e.clientY);
         }
@@ -118,7 +118,7 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
                         <Checkbox isSelected={autoNotesCollected.some(item => item.location === AutoNote.Mid0)} onValueChange={() => handleCollect(AutoNote.Mid0)}></Checkbox>
                     </div>
 
-                    <a>{autoNotesCollected.map(note => (note.location))}</a>
+                    {/*<a>{autoNotesCollected.map(note => (note.location))}</a>*/}
 
                     <Image onClick={(e) => {handleClick(e); onOpen()}} width={450} src={alliance == Alliance.Red ? "./Red.png" : "./Blue.png"} alt={"Field"} />
 

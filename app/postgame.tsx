@@ -12,6 +12,7 @@ export const PostGame = ({updateDefense, updatePickupLocation, updateDefenseScal
     const [defenseScale, setDefenseScale] = useState<number | number[]>(2);
     const [comments, setComments] = useState("");
 
+    // @ts-ignore
     const handlePickupChange = (e) => {
         setPickupLocation(e.target.value)
     }

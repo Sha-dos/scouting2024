@@ -114,3 +114,12 @@ export enum AppState {
     Teleop,
     PostMatch
 }
+
+export enum Station {
+    Red1 = "Red 1",
+    Red2 = "Red 2",
+    Red3 = "Red 3",
+    Blue1 = "Blue 1",
+    Blue2 = "Blue 2",
+    Blue3 = "Blue 3"
+}

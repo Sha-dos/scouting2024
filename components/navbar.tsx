@@ -1,17 +1,24 @@
-import {
-	Navbar as NextUINavbar,
-	NavbarContent,
-	NavbarBrand,
-	NavbarItem,
-} from "@nextui-org/navbar";
+'use client';
 
-import { link as linkStyles } from "@nextui-org/theme";
+import {link as linkStyles} from "@nextui-org/theme";
 
-import { siteConfig } from "@/config/site";
+import {siteConfig} from "@/config/site";
 import NextLink from "next/link";
 import clsx from "clsx";
 import {Image} from "@nextui-org/image";
 import {Button} from "@nextui-org/button";
+import React, {useContext, useState} from "react";
+import {
+	Dropdown,
+	DropdownItem,
+	DropdownMenu,
+	DropdownTrigger,
+	Navbar as NextUINavbar,
+	NavbarBrand,
+	NavbarContent,
+	NavbarItem
+} from "@nextui-org/react";
+import {Station} from "@/components/data";
 
 export const Navbar = () => {
 	return (
@@ -44,21 +51,7 @@ export const Navbar = () => {
 						</NavbarItem>
 					))}
 				</ul>
-
-				<NavbarContent as="div" justify="end">
-					<Button variant="bordered" isIconOnly={true}>
-						<Image
-							src="/cog-outline.svg"
-							width={35}
-							height={35}
-							alt="settings"
-							className="accent-white"
-							/>
-					</Button>
-				</NavbarContent>
 			</NavbarContent>
-
-
 		</NextUINavbar>
 	);
 };
