@@ -11,9 +11,9 @@ import {title} from "@/components/primitives";
 export default function DataPage() {
     const [data, setData] = useState<Data | null>(null);
 
-    /*useEffect(() => {
-        readData().then(value => { setData(JSON.parse(value)); setTmpData(value) })
-    }, [data, tmpData]);*/
+    useEffect(() => {
+        readData().then(value => { setData(JSON.parse(value)); })
+    }, [data]);
 
     function upload() {
         const db = getDatabase();
@@ -42,17 +42,15 @@ export default function DataPage() {
 
     return (
         <div className="flex gap-4">
-            {/*<Button variant="bordered" onPress={() => upload()}>Upload All</Button>
+            <Button variant="bordered" onPress={() => upload()}>Upload All</Button>
             <h1>{"length: " + data?.matches.length}</h1>
-            <h1>{tmpData}</h1>
             <ScrollShadow className="w-[300px] h-[500px]">
                 <div className="flex flex-col gap-4">
                     {data?.matches.map(match => (
                         MatchList(match.matchNumber, match.teamNumber, match.comments)
                     ))}
                 </div>
-            </ScrollShadow>*/}
-            <h1 className={title()}>🚧Under Construction 🚧</h1>
+            </ScrollShadow>
         </div>
     );
 }

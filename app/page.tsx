@@ -20,6 +20,7 @@ import {Button} from "@nextui-org/button";
 import {Teleop} from "@/app/teleop";
 import {PostGame} from "@/app/postgame";
 import {getDatabase, ref, set} from "@firebase/database";
+import {writeData, readData} from "../components/filesystem";
 
 export default function Home() {
 	const [state, setState] = useState(AppState.PreMatch);
@@ -195,9 +196,9 @@ export default function Home() {
 				trap: trap
 			}]}
 
-		/*readData().then(value => {
+		readData().then(value => {
 			//console.log(value.length);
-			if (value.length && value.length != 0) {
+			if (value && value.length && value.length != 0) {
 				console.log("parsing")
 				let parsed: Data = JSON.parse(value);
 				// @ts-ignore
@@ -206,7 +207,7 @@ export default function Home() {
 			} else {
 				writeData(JSON.stringify(data));
 			}
-		});*/
+		});
 	}
 
 	function clear() {

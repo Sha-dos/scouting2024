@@ -15,10 +15,12 @@ import {BaseDirectory, createDir, readTextFile, writeTextFile} from "@tauri-apps
 export async function writeData(json: string) {
     //await invoke('write_file', { json: json });
     //await writeTextFile({ path: 'data.json', contents: json }, { dir: BaseDirectory.App });
+    localStorage.setItem("data", json);
 }
 
 export async function readData() {
     // @ts-ignore
     //return invoke('read_file').then((value) => value.toString())
     //return await readTextFile('data.json', { dir: BaseDirectory.App })
+    return localStorage.getItem("data")?.toString()
 }
