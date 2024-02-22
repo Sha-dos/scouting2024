@@ -10,6 +10,7 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^10.2.5",
     "@nextui-org/button": "2.0.26",
     "@nextui-org/code": "2.0.24",
     "@nextui-org/input": "2.1.16",
@@ -44,6 +45,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.5.9"
+    "@tauri-apps/cli": "^1.5.9",
+    "webpack": "^5.90.3"
   }
 }

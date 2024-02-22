@@ -1,0 +1,26 @@
+{
+  "name": "Scouting",
+  "short_name": "Scouting",
+  "icons": [
+    {
+      "src": "/Blue.png",
+      "sizes": "2500x2500",
+      "type": "image/png"
+    },
+    {
+      "src": "/Red.png",
+      "sizes": "2500x2500",
+      "type": "image/png"
+    },
+    {
+      "src": "/TalonLogo.png",
+      "sizes": "400x400",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}
