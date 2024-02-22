@@ -8,7 +8,7 @@ import {
 	AmpPlayed,
 	AppState,
 	AutoNoteCollected,
-	Climb,
+	Climb, Data,
 	DefenseRange,
 	MicrophoneShot,
 	NoteShot,

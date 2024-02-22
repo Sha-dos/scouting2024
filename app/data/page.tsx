@@ -12,7 +12,10 @@ export default function DataPage() {
     const [data, setData] = useState<Data | null>(null);
 
     useEffect(() => {
-        readData().then(value => { setData(JSON.parse(value)); })
+        readData().then(value => {
+            if (typeof value === "string") {
+                setData(JSON.parse(value));
+            } })
     }, [data]);
 
     function upload() {
