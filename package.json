@@ -45,7 +45,6 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.5.9",
     "webpack": "^5.90.3"
   }
 }
