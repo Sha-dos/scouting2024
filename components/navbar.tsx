@@ -16,11 +16,13 @@ import {
 	Navbar as NextUINavbar,
 	NavbarBrand,
 	NavbarContent,
-	NavbarItem
+	NavbarItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle
 } from "@nextui-org/react";
-import {Station} from "@/components/data";
+import {Link} from "@nextui-org/link";
 
 export const Navbar = () => {
+	const [isOpen, setIsOpen] = useState(false);
+
 	return (
 		<NextUINavbar maxWidth="xl" position="sticky">
 			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -35,22 +37,18 @@ export const Navbar = () => {
 						<p className="font-bold text-inherit">Talon Robotics</p>
 					</NextLink>
 				</NavbarBrand>
-				<ul className="hidden lg:flex gap-4 justify-start ml-2">
-					{siteConfig.navItems.map((item) => (
-						<NavbarItem key={item.href}>
-							<NextLink
-								className={clsx(
-									linkStyles({ color: "foreground" }),
-									"data-[active=true]:text-primary data-[active=true]:font-medium"
-								)}
-								color="foreground"
-								href={item.href}
-							>
-								{item.label}
-							</NextLink>
-						</NavbarItem>
-					))}
-				</ul>
+				{siteConfig.navItems.map((item, index) => (
+					<NavbarItem key={`${item}-${index}`}>
+						<Link
+							color="foreground"
+							className="w-full"
+							href={item.href}
+							size="lg"
+						>
+							{item.label}
+						</Link>
+					</NavbarItem>
+				))}
 			</NavbarContent>
 		</NextUINavbar>
 	);
