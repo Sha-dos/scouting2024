@@ -8,9 +8,13 @@ export const siteConfig = {
 			label: "Home",
 			href: "/",
 		},
-    {
-      label: "Data",
-      href: "/data",
-    },
+    	{
+			label: "Data",
+      		href: "/data",
+    	},
+		{
+			label: "Viewer",
+			href: "/viewer"
+		}
 	],
 };

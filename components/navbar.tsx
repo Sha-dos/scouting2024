@@ -23,6 +23,11 @@ import {Link} from "@nextui-org/link";
 export const Navbar = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
+	const setFullScreen = () => {
+		var docElm = document.documentElement;
+		docElm.requestFullscreen();
+	}
+
 	return (
 		<NextUINavbar maxWidth="xl" position="sticky">
 			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -49,6 +54,12 @@ export const Navbar = () => {
 						</Link>
 					</NavbarItem>
 				))}
+			</NavbarContent>
+
+			<NavbarContent justify="end">
+				<Button variant="bordered" onPress={() => setFullScreen()}>
+					Full Screen
+				</Button>
 			</NavbarContent>
 		</NextUINavbar>
 	);

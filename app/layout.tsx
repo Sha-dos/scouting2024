@@ -9,10 +9,10 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org
 import {Button} from "@nextui-org/button";
 import type { Metadata, Viewport } from "next";
 
-const APP_NAME = "PWA App";
-const APP_DEFAULT_TITLE = "My Awesome PWA App";
-const APP_TITLE_TEMPLATE = "%s - PWA App";
-const APP_DESCRIPTION = "Best PWA app in the world!";
+const APP_NAME = "Scouting 2024";
+const APP_DEFAULT_TITLE = "Scouting 2024";
+const APP_TITLE_TEMPLATE = "Scouting 2024";
+const APP_DESCRIPTION = "Scouting app developed by 2502 Talon Robotics";
 
 export const metadata: Metadata = {
 	applicationName: APP_NAME,

@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Pregame} from "./pregame"
 import {Auto} from "./auto"
 import {
@@ -233,7 +233,7 @@ export default function Home() {
 	switch (state) {
 		case AppState.PreMatch:
 			return (
-				<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+				<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10" >
 					<Button color="danger" variant="bordered" onPress={() => setState(AppState.Auto)}>Auto</Button>
 					<Pregame matchNumber={matchNumber} setMatchNumber={setMatchNumber} teamNumber={teamNumber} setTeamNumber={setTeamNumber}
 							 humanPlayerAmp={humanPlayerAmp} setHumanPlayerAmp={setHumanPlayerAmp} updateAlliance={updateAlliance} station={station} />
