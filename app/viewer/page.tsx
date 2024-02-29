@@ -39,6 +39,7 @@ export default function ViewerPage() {
 
         // Convert the map to the required format of Data
         const matches: { matchNumber: number, teams: TeamMatchData[] }[] = [];
+//@ts-ignore
         for (const [matchNumber, teams] of matchesMap.entries()) {
             matches.push({ matchNumber, teams });
         }
@@ -46,11 +47,10 @@ export default function ViewerPage() {
         return { matches };
     }
 
-    const handleTeamSelect = (e) => {
-        setSelectedTeam(e.target.value)
-    }
+    
 
     useEffect(() => {
+//@ts-ignore
         fetchAllMatches().then(value => convertMatches(value).then(value1 => setMatchData(value1)));
     }, []);
 
