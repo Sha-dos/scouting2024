@@ -21,7 +21,7 @@ export default function DataPage() {
     function upload() {
         const db = getDatabase();
 
-        data?.matches.map(match => {
+        /*data?.matches.map(match => {
             set(ref(db, 'data/' + match.matchNumber + '/teams/' + match.teamNumber), {
                 ampPlayed: match.ampPlayed,
                 amplify: match.amplify,
@@ -40,7 +40,7 @@ export default function DataPage() {
                 notesAttempted: match.notesAttempted,
                 trap: match.trap
             });
-        })
+        })*/
     }
 
     return (
