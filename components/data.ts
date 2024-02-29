@@ -1,3 +1,5 @@
+import {all} from "deepmerge";
+
 export interface Data {
     matches: {
         matchNumber: number,
@@ -8,6 +10,7 @@ export interface Data {
 export interface TeamMatchData {
     teamNumber: number,
     matchNumber: number,
+    alliance: Alliance,
     humanPlayerAmp: boolean,
     autoNotesAttempted: NoteShot[],
     autoNotesCollected: AutoNoteCollected[],
@@ -108,8 +111,8 @@ export enum Park {
 }
 
 export enum Alliance {
-    Red,
-    Blue
+    Red = "Red",
+    Blue = "Blue"
 }
 
 export enum AppState {
@@ -139,6 +142,7 @@ export const parseFirebaseData = (data: any): TeamMatchData[] => {
             const match: TeamMatchData = {
                 teamNumber: parseInt(teamNumber),
                 matchNumber: parseInt(matchId),
+                alliance: parseAlliance(teamData.alliance),
                 humanPlayerAmp: teamData.humanPlayerAmp,
                 autoNotesAttempted: parseAutoNotesAttempted(teamData.autoNotesAttempted),
                 autoNotesCollected: parseAutoNotesCollected(teamData.autoNotesCollected),
@@ -344,3 +348,14 @@ const parseDefenseScale = (defenseScale: string | undefined): DefenseRange => {
             return DefenseRange.DidNotPlay
     }
 };
+
+const parseAlliance = (alliance: string | undefined): Alliance => {
+    switch (alliance) {
+        case "Red":
+            return Alliance.Red
+        case "Blue":
+            return Alliance.Blue
+        default:
+            return Alliance.Red
+    }
+}

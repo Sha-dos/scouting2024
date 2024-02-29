@@ -154,6 +154,7 @@ export default function Home() {
 		const db = getDatabase();
 
 		set(ref(db, 'data/' + matchNumber + '/teams/' + teamNumber), {
+			alliance: alliance,
 			ampPlayed: ampPlayed,
 			amplify: amplify,
 			autoNotesAttempted: autoNotesAttempted,
