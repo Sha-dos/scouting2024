@@ -9,7 +9,7 @@ import {getDatabase, ref, set} from "@firebase/database";
 import {title} from "@/components/primitives";
 
 export default function DataPage() {
-    const [data, setData] = useState<Data | null>(null);
+    /*const [data, setData] = useState<Data | null>(null);
 
     useEffect(() => {
         readData().then(value => {
@@ -21,7 +21,7 @@ export default function DataPage() {
     function upload() {
         const db = getDatabase();
 
-        /*data?.matches.map(match => {
+        data?.matches.map(match => {
             set(ref(db, 'data/' + match.matchNumber + '/teams/' + match.teamNumber), {
                 ampPlayed: match.ampPlayed,
                 amplify: match.amplify,
@@ -40,7 +40,7 @@ export default function DataPage() {
                 notesAttempted: match.notesAttempted,
                 trap: match.trap
             });
-        })*/
+        })
     }
 
     return (
@@ -55,7 +55,10 @@ export default function DataPage() {
                 </div>
             </ScrollShadow>
         </div>
-    );
+    );*/
+
+return (
+<h1>Data</h1>
 }
 
 function MatchList(match: number, team: number, comments: string) {
