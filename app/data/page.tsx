@@ -59,6 +59,7 @@ export default function DataPage() {
 
 return (
 <h1>Data</h1>
+)
 }
 
 function MatchList(match: number, team: number, comments: string) {
