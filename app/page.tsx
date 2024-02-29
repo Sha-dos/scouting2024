@@ -243,7 +243,7 @@ export default function Home() {
 
 		case AppState.Auto:
 			return (
-				<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+				<section className="flex flex-col items-center justify-center gap-4">
 					<div className="flex gap-4">
 						<Button color="danger" variant="bordered" onPress={() => setState(AppState.PreMatch)}>Back</Button>
 						<Button color="danger" variant="bordered" onPress={() => setState(AppState.Teleop)}>Teleop</Button>
