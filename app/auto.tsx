@@ -45,8 +45,8 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
         const [y, setY] = useState(0);
 
         const handleClick = (e: React.MouseEvent<HTMLImageElement>) => {
-            setX(e.clientX);
-            setY(e.clientY);
+            setX(e.pageX - offsetX);
+            setY(e.pageY - offsetY);
         }
 
         // All of these need to set in the fn itself, and in the page, cant use the value to set it, must create new
@@ -100,6 +100,28 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
           }
         }
 
+    const [offsetX, setOffsetX] = useState(0);
+    const [offsetY, setOffsetY] = useState(0);
+
+    const imageRef = useRef(null);
+
+    useEffect(() => {
+        const updateOffsets = () => {
+            if (imageRef.current) {
+                const rect = imageRef.current.getBoundingClientRect();
+                console.log(rect.left + ", " + rect.top);
+                setOffsetX(rect.left);
+                setOffsetY(rect.top);
+            }
+        };
+
+        window.addEventListener('resize', updateOffsets);
+        updateOffsets();
+        return () => {
+            window.removeEventListener('resize', updateOffsets);
+        };
+    }, []);
+
         return (
             <>
             <h1 className="tracking-tight inline font-semibold text-[2.3rem] lg:text-4xl leading-9">{time}</h1>
@@ -120,7 +142,12 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
 
                     {/*<a>{autoNotesCollected.map(note => (note.location))}</a>*/}
 
-                    <Image onClick={(e) => {handleClick(e); onOpen()}} width={450} src={alliance == Alliance.Red ? "./Red.png" : "./Blue.png"} alt={"Field"} />
+                    <Image
+                        onClick={(e) => {handleClick(e); onOpen()}}
+                        width={450}
+                        src={alliance == Alliance.Red ? "./Red.png" : "./Blue.png"} alt={"Field"}
+                        ref={imageRef}
+                    />
 
                     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                         <ModalContent>
@@ -162,7 +189,11 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
                             return (
                                 <>
                                     {
-                                        attempt.locationShot ? <ShootPoint made={attempt.made} x={attempt.locationShot.x} y={attempt.locationShot.y} /> : <></>
+                                        attempt.locationShot ? <ShootPoint
+                                            made={attempt.made}
+                                            x={attempt.locationShot.x + offsetX}
+                                            y={attempt.locationShot.y + offsetY}
+                                        /> : <></>
                                     }
                                     {/*<a className="font-mono">{index + ". " + attempt.made + " " + attempt.locationScored.toString() + " @ " + attempt.time} <br/> </a>*/}
                                 </>

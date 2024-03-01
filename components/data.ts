@@ -1,5 +1,3 @@
-import {all} from "deepmerge";
-
 export interface Data {
     matches: {
         matchNumber: number,
@@ -171,7 +169,7 @@ const parseAutoNotesAttempted = (notes: any[] | undefined): NoteShot[] => {
     return notes.map(note => ({
         time: note.time,
         made: false,
-        locationShot: null,
+        locationShot: parseFieldLocation(note.locationShot),
         locationScored: parseScoreLocation(note.locationScored)
     }));
 };
