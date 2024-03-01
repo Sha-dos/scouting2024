@@ -108,6 +108,7 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
     useEffect(() => {
         const updateOffsets = () => {
             if (imageRef.current) {
+                //@ts-ignore
                 const rect = imageRef.current.getBoundingClientRect();
                 console.log(rect.left + ", " + rect.top);
                 setOffsetX(rect.left);

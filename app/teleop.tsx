@@ -127,6 +127,7 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
     useEffect(() => {
         const updateOffsets = () => {
             if (imageRef.current) {
+                //@ts-ignore
                 const rect = imageRef.current.getBoundingClientRect();
                 console.log(rect.left + ", " + rect.top);
                 setOffsetX(rect.left);

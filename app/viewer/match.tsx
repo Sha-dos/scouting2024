@@ -172,6 +172,7 @@ const TeamData = ({team}: {team: TeamMatchData}) => {
     useEffect(() => {
         const updateOffsets = () => {
             if (imageRef.current) {
+                //@ts-ignore
                 const rect = imageRef.current.getBoundingClientRect();
                 console.log(rect.left + ", " + rect.top);
                 setOffsetX(rect.left);
