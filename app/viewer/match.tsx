@@ -136,7 +136,7 @@ const MatchView = ({matchNumber, teams, updateSelectedMatch}:
 
 export const MatchDetailView = ({data, updateSelectedMatch}:
                                     {data: { matchNumber: number, teams: TeamMatchData[] } | undefined, updateSelectedMatch: (arg0: number | null) => void}) => {
-    if (!data) { return; }
+    if (!data) { return(<></>); }
 
     return (
         <div className="flex flex-col">
@@ -193,7 +193,7 @@ const TeamData = ({team}: {team: TeamMatchData}) => {
 
             {team.autoNotesCollected.map(note => (
                 <a key={note.time}>{note.location + " @ " + note.time}</a>
-            ))}11
+            ))}
 
             <Image ref={imageRef} src={team.alliance === Alliance.Red ? "/Red.png" : "/Blue.png"} width={350} alt="Field"/>
 

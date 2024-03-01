@@ -235,6 +235,7 @@ export default function Home() {
 		case AppState.PreMatch:
 			return (
 				<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10" >
+					<Button onPress={() => localStorage.clear()}>Clear Data</Button>
 					<Button color="danger" variant="bordered" onPress={() => setState(AppState.Auto)}>Auto</Button>
 					<Pregame matchNumber={matchNumber} setMatchNumber={setMatchNumber} teamNumber={teamNumber} setTeamNumber={setTeamNumber}
 							 humanPlayerAmp={humanPlayerAmp} setHumanPlayerAmp={setHumanPlayerAmp} updateAlliance={updateAlliance} station={station} />

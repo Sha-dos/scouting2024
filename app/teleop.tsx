@@ -1,5 +1,5 @@
 import {Image, Modal, ModalBody, ModalContent, ModalHeader, Select, SelectItem, useDisclosure} from "@nextui-org/react";
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Alliance, AmpPlayed, Climb, MicrophoneShot, NoteShot, Park, ScoreLocation} from "@/components/data";
 import {Button} from "@nextui-org/button";
 import {ShootPoint} from "@/components/shot";
@@ -24,8 +24,8 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
     const [y, setY] = useState(0);
 
     const handleClick = (e: React.MouseEvent<HTMLImageElement>) => {
-        setX(e.clientX);
-        setY(e.clientY);
+        setX(e.pageX - offsetX);
+        setY(e.pageY - offsetY);
     }
 
     const handleShotPoint = (made: boolean, location: ScoreLocation) => {
@@ -119,6 +119,28 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
         Park.None
     ]
 
+    const [offsetX, setOffsetX] = useState(0);
+    const [offsetY, setOffsetY] = useState(0);
+
+    const imageRef = useRef(null);
+
+    useEffect(() => {
+        const updateOffsets = () => {
+            if (imageRef.current) {
+                const rect = imageRef.current.getBoundingClientRect();
+                console.log(rect.left + ", " + rect.top);
+                setOffsetX(rect.left);
+                setOffsetY(rect.top);
+            }
+        };
+
+        window.addEventListener('resize', updateOffsets);
+        updateOffsets();
+        return () => {
+            window.removeEventListener('resize', updateOffsets);
+        };
+    }, []);
+
     return (
         <div className="flex justify-center gap-4">
             <Image onClick={(e) => {handleClick(e); onOpen()}} width={450} src={alliance == Alliance.Red ? "./Red.png" : "./Blue.png"} alt={"Field"} />
@@ -150,7 +172,11 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
                     return (
                         <>
                             {
-                                attempt.locationShot ? <ShootPoint made={attempt.made} x={attempt.locationShot.x} y={attempt.locationShot.y} /> : <></>
+                                attempt.locationShot ? <ShootPoint
+                                    made={attempt.made}
+                                    x={attempt.locationShot.x + offsetX}
+                                    y={attempt.locationShot.y + offsetY}
+                                /> : <></>
                             }
                             {/*<a className="font-mono">{index + ". " + attempt.made + " " + attempt.locationScored.toString() + " @ " + attempt.time} <br/> </a>*/}
                         </>
