@@ -8,6 +8,7 @@ import clsx from "clsx";
 import {Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
 import {Button} from "@nextui-org/button";
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react"
 
 const APP_NAME = "Scouting 2024";
 const APP_DEFAULT_TITLE = "Scouting 2024";
@@ -85,6 +86,7 @@ export default function RootLayout({
             <Navbar />
 						<main className="container mx-auto max-w-7xl flex-grow">
 							{children}
+							<Analytics />
 						</main>
 					</div>
 				</Providers>
