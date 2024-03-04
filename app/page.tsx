@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Pregame} from "./pregame"
 import {Auto} from "./auto"
 import {
@@ -8,19 +8,21 @@ import {
 	AmpPlayed,
 	AppState,
 	AutoNoteCollected,
-	Climb, Data,
+	Climb,
+	Data,
 	DefenseRange,
 	MicrophoneShot,
 	NoteShot,
 	Park,
 	PickupLocation,
 	Station,
+	Trap,
 } from "@/components/data";
 import {Button} from "@nextui-org/button";
 import {Teleop} from "@/app/teleop";
 import {PostGame} from "@/app/postgame";
 import {getDatabase, ref, set} from "@firebase/database";
-import {writeData, readData} from "../components/filesystem";
+import {readData, writeData} from "../components/filesystem";
 
 export default function Home() {
 	const [state, setState] = useState(AppState.PreMatch);
@@ -44,7 +46,7 @@ export default function Home() {
 	const [ampPlayed, setAmpPlayed] = useState<AmpPlayed | null>(null);
 	const [microphone, setMicrophone] = useState<MicrophoneShot | null>(null);
 	const [climb, setClimb] = useState<Climb | false>(false);
-	const [trap, setTrap] = useState(false);
+	const [trap, setTrap] = useState(Trap.None);
 	const [amplify, setAmplify] = useState(0);
 
 	// Post Match
@@ -59,18 +61,8 @@ export default function Home() {
 		setAutoNotesAttempted(prevState => [...prevState, thisAutoNotesAttempted]);
 	}
 
-	const updateAutoNotesCollected = (note: AutoNoteCollected, already: boolean, existingIndex: number) => {
-     	if (already) {
-      		setAutoNotesCollected(prevNotes => [
-            	...prevNotes.slice(0, existingIndex),
-           		...prevNotes.slice(existingIndex + 1)
-          	]);
-    	} else {
-      		setAutoNotesCollected(prevNotes => [
-            	...prevNotes,
-            	note
-          	]);
-    	}
+	const updateAutoNotesCollected = (thisNotesAttempted: NoteShot) => {
+     	setAutoNotesAttempted(prevState => [...prevState, thisNotesAttempted])
 	}
 
 	const updateAutoPark = (thisAutoPark: boolean) => {
@@ -99,7 +91,7 @@ export default function Home() {
 		setClimb(thisClimb);
 	}
 
-	const updateTrap = (thisTrap: boolean) => {
+	const updateTrap = (thisTrap: Trap) => {
 		setTrap(thisTrap);
 	}
 
@@ -177,6 +169,7 @@ export default function Home() {
 	function download() {
 		let data = {
 			matches: [{
+				alliance: alliance,
 				matchNumber: matchNumber,
 				teamNumber: teamNumber,
 				ampPlayed: ampPlayed,
@@ -223,7 +216,7 @@ export default function Home() {
 		setAmpPlayed(null);
 		setMicrophone(null);
 		setClimb(false);
-		setTrap(false);
+		setTrap(Trap.None);
 		setAmplify(0);
 		setDefense(false);
 		setDefenseScale(null);
@@ -237,7 +230,8 @@ export default function Home() {
 				<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10" >
 					<Button color="danger" variant="bordered" onPress={() => setState(AppState.Auto)}>Auto</Button>
 					<Pregame matchNumber={matchNumber} setMatchNumber={setMatchNumber} teamNumber={teamNumber} setTeamNumber={setTeamNumber}
-							 humanPlayerAmp={humanPlayerAmp} setHumanPlayerAmp={setHumanPlayerAmp} updateAlliance={updateAlliance} station={station} />
+							 humanPlayerAmp={humanPlayerAmp} setHumanPlayerAmp={setHumanPlayerAmp} updateAlliance={updateAlliance}
+							 station={station} />
 				</section>
 			)
 
@@ -249,7 +243,7 @@ export default function Home() {
 						<Button color="danger" variant="bordered" onPress={() => setState(AppState.Teleop)}>Teleop</Button>
 					</div>
 					<Auto alliance={alliance} updateAutoNotesCollected={updateAutoNotesCollected}
-						  updateAutoNotesAttempted={updateAutoNotesAttempted} updateAutoPark={updateAutoPark} />
+						  updateAutoNotesAttempted={updateAutoNotesAttempted} updateAutoPark={updateAutoPark}/>
 				</section>
 			)
 

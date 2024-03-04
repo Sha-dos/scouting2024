@@ -49,33 +49,48 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
             setY(e.pageY - offsetY);
         }
 
-        // All of these need to set in the fn itself, and in the page, cant use the value to set it, must create new
-        const handleShotPoint = (made: boolean, amp: boolean) => {
-            let value = !amp ? {
-                time: time,
-                made: made,
-                locationShot: {
-                    x: x,
-                    y: y,
-                    distance: 0,
-                    angle: 0
-                },
-                locationScored: ScoreLocation.Speaker
-            } : {
-                time: time,
-                made: made,
-                locationShot: null,
-                locationScored: ScoreLocation.Amp
-            };
+        const handlePark = (e: boolean) => {
+            setAutoPark(e)
+            updateAutoPark(e)
+        }
 
-            if (amp) { setAmpShots(prevState => prevState + 1); }
+        const handleShotPoint = (made: boolean, location: ScoreLocation) => {
+            let value: any;
+
+            if (location == ScoreLocation.Speaker) {
+                value = {
+                    time: null,
+                    made: made,
+                    locationShot: {
+                        x: x,
+                        y: y,
+                        distance: 0,
+                        angle: 0
+                    },
+                    locationScored: ScoreLocation.Speaker}
+            } else if (location == ScoreLocation.Amp) {
+                setAmpShots(prevState => prevState + 1);
+                value = {
+                    time: null,
+                    made: made,
+                    locationShot: null,
+                    locationScored: ScoreLocation.Amp
+                }
+            } else {
+                value = {
+                    time: null,
+                    made: made,
+                    locationShot: null,
+                    locationScored: ScoreLocation.Trap
+                }
+            }
 
             setAutoNotesAttempted(prevState => [
                 ...prevState, value
             ]);
 
             updateAutoNotesAttempted(value);
-        }
+    }
 
         const handleCollect = (note: AutoNote) => {
             const existingIndex = autoNotesCollected.findIndex(item => item.location === note);
@@ -158,11 +173,11 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
                                     <ModalBody>
                                         <Button variant="bordered" onPress={() => {
                                             onClose();
-                                            handleShotPoint(true, false);
+                                            handleShotPoint(true, ScoreLocation.Speaker)
                                         }}>Yes</Button>
                                         <Button variant="bordered" onPress={() => {
                                             onClose();
-                                            handleShotPoint(false, false);
+                                            handleShotPoint(false, ScoreLocation.Speaker);
                                         }}>No</Button>
                                         <Button color="danger" variant="bordered" onPress={onClose}>Cancel</Button>
                                     </ModalBody>
@@ -172,10 +187,10 @@ export const Auto = ({alliance, updateAutoNotesCollected, updateAutoNotesAttempt
                     </Modal>
 
                     <div className="flex flex-col gap-4">
-                        <Button variant="bordered" onPress={() => handleShotPoint(true, true)}>
+                        <Button variant="bordered" onPress={() => handleShotPoint(true, ScoreLocation.Amp)}>
                             {"Amp: " + ampShots}
                         </Button>
-                        <Checkbox isSelected={autoPark} onValueChange={setAutoPark}>Park</Checkbox>
+                        <Checkbox isSelected={autoPark} onValueChange={handlePark}>Park</Checkbox>
                     </div>
 
                     {/*<div className="flex flex-col gap-16">

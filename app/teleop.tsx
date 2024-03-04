@@ -1,6 +1,6 @@
 import {Image, Modal, ModalBody, ModalContent, ModalHeader, Select, SelectItem, useDisclosure} from "@nextui-org/react";
 import React, {useEffect, useRef, useState} from "react";
-import {Alliance, AmpPlayed, Climb, MicrophoneShot, NoteShot, Park, ScoreLocation} from "@/components/data";
+import {Alliance, AmpPlayed, Climb, MicrophoneShot, NoteShot, Park, ScoreLocation, Trap} from "@/components/data";
 import {Button} from "@nextui-org/button";
 import {ShootPoint} from "@/components/shot";
 import {Checkbox} from "@nextui-org/checkbox";
@@ -13,7 +13,7 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
     const [ampPlayed, setAmpPlayed] = useState<AmpPlayed>(AmpPlayed.None);
     const [microphone, setMicrophone] = useState<MicrophoneShot>(MicrophoneShot.DidNotAttempt);
     const [climb, setClimb] = useState<Climb>(Climb.None);
-    const [trap, setTrap] = useState(false);
+    const [trap, setTrap] = useState<Trap>(Trap.None);
     const [amplify, setAmplify] = useState(0);
 
     const [ampShots, setAmpShots] = useState(0);
@@ -89,6 +89,12 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
         updatePark(e.target.value);
     };
 
+    // @ts-ignore
+    const handleTrapChange = (e) => {
+        setTrap(e.target.value)
+        updateTrap(e.target.value)
+    }
+
     const ampList = [
         AmpPlayed.Send,
         AmpPlayed.Accept,
@@ -119,6 +125,13 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
         Park.None
     ]
 
+    const trapList = [
+        Trap.One,
+        Trap.Two,
+        Trap.Three,
+        Trap.None,
+    ]
+
     const [offsetX, setOffsetX] = useState(0);
     const [offsetY, setOffsetY] = useState(0);
 
@@ -144,7 +157,12 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
 
     return (
         <div className="flex justify-center gap-4">
-            <Image onClick={(e) => {handleClick(e); onOpen()}} width={450} src={alliance == Alliance.Red ? "./Red.png" : "./Blue.png"} alt={"Field"} />
+            <Image
+                ref={imageRef}
+                onClick={(e) => {handleClick(e); onOpen()}}
+                width={450}
+                src={alliance == Alliance.Red ? "./Red.png" : "./Blue.png"} alt={"Field"}
+            />
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
@@ -188,7 +206,6 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
             <div className="flex flex-col gap-4">
                 <h2>Scoring</h2>
                 <Button variant="bordered" onPress={() => handleShotPoint(true, ScoreLocation.Amp)}>{"Amp: " + ampShots}</Button>
-                {/*<Button color="primary" variant="bordered" onPress={() => handleShotPoint(true, ScoreLocation.Trap)}>Trap</Button>*/}
             </div>
 
             <div className="flex flex-col gap-4">
@@ -262,7 +279,20 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
                     ))}
                 </Select>
 
-                <Checkbox isSelected={trap} onValueChange={(trap) => {setTrap(trap); updateTrap(trap)}}>Trap</Checkbox>
+                <Select
+                    label="Trap"
+                    variant="bordered"
+                    placeholder="Select"
+                    selectedKeys={[trap]}
+                    className="max-w-xs"
+                    onChange={handleTrapChange}
+                >
+                    {trapList.map((trap) => (
+                        <SelectItem key={trap} value={trap}>
+                            {trap}
+                        </SelectItem>
+                    ))}
+                </Select>
             </div>
         </div>
     )

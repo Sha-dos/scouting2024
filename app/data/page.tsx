@@ -21,6 +21,7 @@ export default function DataPage() {
 
         data?.matches.map(team => {
             set(ref(db, 'data/' + team.matchNumber + '/teams/' + team.teamNumber), {
+                alliance: team.alliance,
                 ampPlayed: team.ampPlayed,
                 amplify: team.amplify,
                 autoNotesAttempted: team.autoNotesAttempted,

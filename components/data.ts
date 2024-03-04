@@ -18,7 +18,7 @@ export interface TeamMatchData {
     ampPlayed: AmpPlayed,
     microphone: MicrophoneShot,
     climb: Climb,
-    trap: boolean,
+    trap: Trap,
     amplify: number,
     defense: boolean,
     pickupLocation: PickupLocation,
@@ -129,6 +129,13 @@ export enum Station {
     Blue3 = "Blue 3"
 }
 
+export enum Trap {
+    One = "One",
+    Two = "Two",
+    Three = "Three",
+    None = "None",
+}
+
 export const parseFirebaseData = (data: any): TeamMatchData[] => {
     const matches: TeamMatchData[] = [];
     for (const matchId in data) {
@@ -150,7 +157,7 @@ export const parseFirebaseData = (data: any): TeamMatchData[] => {
                 ampPlayed: parseAmpPlayed(teamData.ampPlayed),
                 microphone: parseMicrophoneShot(teamData.microphone),
                 climb: parseClimb(teamData.climb),
-                trap: teamData.trap,
+                trap: parseTrap(teamData.trap),
                 amplify: teamData.amplify,
                 defense: teamData.defense,
                 pickupLocation: parsePickupLocation(teamData.pickupLocation),
@@ -163,12 +170,25 @@ export const parseFirebaseData = (data: any): TeamMatchData[] => {
     return matches;
 };
 
+const parseTrap = (trap: string): Trap => {
+    switch (trap) {
+        case "One":
+            return Trap.One
+        case "Two":
+            return Trap.Two
+        case "Three":
+            return Trap.Three
+        default:
+            return Trap.None
+    }
+}
+
 const parseAutoNotesAttempted = (notes: any[] | undefined): NoteShot[] => {
     if (!notes) { return []; }
 
     return notes.map(note => ({
         time: note.time,
-        made: false,
+        made: note.made,
         locationShot: parseFieldLocation(note.locationShot),
         locationScored: parseScoreLocation(note.locationScored)
     }));
