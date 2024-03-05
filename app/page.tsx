@@ -27,7 +27,7 @@ import {readData, writeData} from "../components/filesystem";
 export default function Home() {
 	const [state, setState] = useState(AppState.PreMatch);
 
-	const [alliance, setAlliance] = useState(Alliance.Blue);
+	const [alliance, setAlliance] = useState(Alliance.Red);
 
 	// Pre Match
 	const [teamNumber, setTeamNumber] = useState("");
