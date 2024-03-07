@@ -30,6 +30,8 @@
     "@types/react-dom": "18.2.7",
     "@vercel/analytics": "^1.2.2",
     "autoprefixer": "10.4.16",
+    "chart.js": "^4.4.2",
+    "chartjs": "^0.3.24",
     "clsx": "^2.0.0",
     "eslint": "8.48.0",
     "eslint-config-next": "14.0.2",

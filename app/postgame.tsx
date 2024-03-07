@@ -6,23 +6,10 @@ import {PickupLocation} from "@/components/data";
 import {Textarea} from "@nextui-org/input";
 
 // @ts-ignore
-export const PostGame = ({updateDefense, updatePickupLocation, updateDefenseScale, updateComments}) => {
+export const PostGame = ({updateDefense, updateDefenseScale, updateComments}) => {
     const [defense, setDefense] = useState(false);
-    const [pickupLocation, setPickupLocation] = useState(PickupLocation.None);
     const [defenseScale, setDefenseScale] = useState<number | number[]>(2);
     const [comments, setComments] = useState("");
-
-    // @ts-ignore
-    const handlePickupChange = (e) => {
-        setPickupLocation(e.target.value)
-    }
-
-    const pickupLocationList = [
-        PickupLocation.None,
-        PickupLocation.Floor,
-        PickupLocation.HumanPlayer,
-        PickupLocation.Both,
-    ]
 
     return (
         <>
@@ -65,21 +52,6 @@ export const PostGame = ({updateDefense, updatePickupLocation, updateDefenseScal
                 ]}
                 className="max-w-md"
             />
-
-            <Select
-                label="Pickup"
-                variant="bordered"
-                placeholder="Select"
-                selectedKeys={[pickupLocation]}
-                className="max-w-xs"
-                onChange={handlePickupChange}
-            >
-                {pickupLocationList.map((loc) => (
-                    <SelectItem key={loc} value={loc}>
-                        {loc}
-                    </SelectItem>
-                ))}
-            </Select>
 
             <Textarea
                 variant="underlined"

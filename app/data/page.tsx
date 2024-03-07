@@ -35,7 +35,6 @@ export default function DataPage() {
                 microphone: team.microphone,
                 number: team.teamNumber,
                 park: team.park,
-                pickupLocation: team.pickupLocation,
                 notesAttempted: team.notesAttempted,
                 trap: team.trap
             });

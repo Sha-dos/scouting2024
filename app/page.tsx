@@ -51,7 +51,6 @@ export default function Home() {
 
 	// Post Match
 	const [defense, setDefense] = useState(false);
-	const [pickupLocation, setPickupLocation] = useState(PickupLocation.None);
 	const [defenseScale, setDefenseScale] = useState<DefenseRange | null>(null);
 	const [comments, setComments] = useState("");
 
@@ -61,8 +60,8 @@ export default function Home() {
 		setAutoNotesAttempted(prevState => [...prevState, thisAutoNotesAttempted]);
 	}
 
-	const updateAutoNotesCollected = (thisNotesAttempted: NoteShot) => {
-     	setAutoNotesAttempted(prevState => [...prevState, thisNotesAttempted])
+	const updateAutoNotesCollected = (thisNotesCollected: AutoNoteCollected) => {
+     	setAutoNotesCollected(prevState => [...prevState, thisNotesCollected])
 	}
 
 	const updateAutoPark = (thisAutoPark: boolean) => {
@@ -103,10 +102,6 @@ export default function Home() {
 
 	const updateDefense = (thisDefense: boolean) => {
 		setDefense(thisDefense);
-	}
-
-	const updatePickupLocation = (thisPickupLocation: PickupLocation) => {
-		setPickupLocation(thisPickupLocation);
 	}
 
 	const updateComments = (thisComments: string) => {
@@ -160,7 +155,6 @@ export default function Home() {
 			microphone: microphone,
 			number: teamNumber,
 			park: park,
-			pickupLocation: pickupLocation,
 			notesAttempted: notesAttempted,
 			trap: trap
 		});
@@ -185,7 +179,6 @@ export default function Home() {
 				microphone: microphone,
 				number: teamNumber,
 				park: park,
-				pickupLocation: pickupLocation,
 				notesAttempted: notesAttempted,
 				trap: trap
 			}]}
@@ -221,7 +214,6 @@ export default function Home() {
 		setDefense(false);
 		setDefenseScale(null);
 		setComments("");
-		setPickupLocation(PickupLocation.None);
 	}
 
 	switch (state) {
@@ -272,7 +264,7 @@ export default function Home() {
 							clear();
 						}}>Next Match</Button>
 					</div>
-					<PostGame updateDefense={updateDefense} updatePickupLocation={updatePickupLocation} updateDefenseScale={updateDefenseScale}
+					<PostGame updateDefense={updateDefense} updateDefenseScale={updateDefenseScale}
 							  updateComments={updateComments} />
 				</section>
 			)

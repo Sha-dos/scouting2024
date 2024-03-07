@@ -19,7 +19,7 @@ import {useEffect, useRef, useState} from "react";
 
 const DOWNSCALE = 0.77777777778;
 
-export const MatchListView = ({matchData, updateSelectedMatch}: {matchData: Data | undefined, updateSelectedMatch: (arg0: number | null) => void}) => {
+export const MatchListView = ({matchData, updateSelectedMatch, updateSelectedTeam}: {matchData: Data | undefined, updateSelectedMatch: (arg0: number | null) => void, updateSelectedTeam: (arg0: number | null) => void}) => {
     return (
         <div className="flex flex-col min-w-[100%]">
             <div className="flex min-w-[85%]">
@@ -68,7 +68,7 @@ export const MatchListView = ({matchData, updateSelectedMatch}: {matchData: Data
                 return (
                     <div key={match.matchNumber} className="min-w-[100%]">
                         <Divider/>
-                        <MatchView key={match.matchNumber} matchNumber={match.matchNumber} teams={match.teams} updateSelectedMatch={updateSelectedMatch}/>
+                        <MatchView key={match.matchNumber} matchNumber={match.matchNumber} teams={match.teams} updateSelectedMatch={updateSelectedMatch} updateSelectedTeam={updateSelectedTeam}/>
                     </div>
                 )
             })}
@@ -76,10 +76,8 @@ export const MatchListView = ({matchData, updateSelectedMatch}: {matchData: Data
     )
 }
 
-const MatchView = ({matchNumber, teams, updateSelectedMatch}:
-                       { matchNumber: number, teams: TeamMatchData[], updateSelectedMatch: (arg0: number | null) => void }) => {
-
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+const MatchView = ({matchNumber, teams, updateSelectedMatch, updateSelectedTeam}:
+                       { matchNumber: number, teams: TeamMatchData[], updateSelectedMatch: (arg0: number | null) => void, updateSelectedTeam: (arg0: number | null) => void}) => {
 
     return (
         <div className="flex content-evenly min-w-full">
@@ -91,7 +89,7 @@ const MatchView = ({matchNumber, teams, updateSelectedMatch}:
             <div className="flex flex-col gap-4 min-w-full">
                 {teams.map((team, idx) => (
                     <div className="flex min-w-[85%]" key={team.teamNumber}>
-                        <Button onPress={onOpen} variant="light" key={idx} className="justify-start flex gap-4">{
+                        <Button onPress={() => updateSelectedTeam(team.teamNumber)} variant="light" key={idx} className="justify-start flex gap-4">{
                             <>
                                 {/* Maybe move color back to the button */}
                                 <a className={team.alliance == Alliance.Red ? "w-16 text-red-600" : "w-16 text-blue-600"}>{team.teamNumber}</a>
@@ -122,23 +120,6 @@ const MatchView = ({matchNumber, teams, updateSelectedMatch}:
                                 <Divider orientation="vertical"/>
                             </>
                         }</Button>
-
-                        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
-                            <ModalContent>
-                                {(onClose) => (
-                                    <>
-                                        <ModalHeader className="flex flex-col gap-1">{team.teamNumber}</ModalHeader>
-                                        <ModalBody>
-                                        </ModalBody>
-                                        <ModalFooter>
-                                            <Button color="danger" variant="light" onPress={onClose}>
-                                                Close
-                                            </Button>
-                                        </ModalFooter>
-                                    </>
-                                )}
-                            </ModalContent>
-                        </Modal>
                     </div>
                 ))}
             </div>
@@ -239,7 +220,7 @@ const AutoView = ({team}: {team: TeamMatchData}) => {
             <Divider/>
 
             <div className="flex flex-col gap-1">
-                <a>{"Park: " + team.park}</a>
+                <a>{"Park: " + team.autoPark}</a>
                 <a>{"Amp in auto (flex): " + team.autoNotesAttempted.filter(note => note.locationScored == ScoreLocation.Amp).length}</a>
                 <a>Collected: {team.autoNotesCollected.map(note => (
                     <a key={note.time}>{note.location + " @ " + note.time + " "}</a>
@@ -309,12 +290,12 @@ const TeleopView = ({team}: { team: TeamMatchData }) => {
 
             <a>{"Comments: " + team.comments}</a>
 
-            { team.humanPlayerAmp ?
+            {team.humanPlayerAmp ?
                 <>
                     <a>{"Amp Played: " + team.ampPlayed}</a>
                     <a>{"Amplify: " + team.amplify}</a>
                     <a>{"Microphone: " + team.microphone}</a>
-                </> : <></> }
+                </> : <></>}
 
             <Image ref={imageRef} src={team.alliance === Alliance.Red ? "/Red.png" : "/Blue.png"} width={350}
                    alt="Field"/>

@@ -4,9 +4,8 @@ import {useEffect, useState} from "react";
 import {Alliance, Data, parseFirebaseData, TeamMatchData} from "@/components/data";
 import {get, getDatabase, ref} from "@firebase/database";
 import {Button, ButtonGroup} from "@nextui-org/button";
-import {ModalFooter} from "@nextui-org/modal";
 import {MatchDetailView, MatchListView} from "@/app/viewer/match";
-import {TeamListView} from "@/app/viewer/team";
+import {TeamDetailView, TeamListView} from "@/app/viewer/team";
 
 enum View {
     Matches,
@@ -17,6 +16,7 @@ export default function ViewerPage() {
     const [data, setData] = useState<TeamMatchData[] | null>(null);
     const [matchData, setMatchData] = useState<Data>();
     const [selectedMatch, setSelectedMatch] = useState<number | null>(null);
+    const [selectedTeam, setSelectedTeam] = useState<number | null>(null);
 
     const [view, setView] = useState(View.Matches);
 
@@ -59,6 +59,10 @@ export default function ViewerPage() {
         setSelectedMatch(match)
     }
 
+    function updateSelectedTeam(team: number | null) {
+        setSelectedTeam(team)
+    }
+
     useEffect(() => {
         //@ts-ignore
         fetchAllMatches().then(value => convertMatches(value).then(value1 => setMatchData(value1)));
@@ -71,6 +75,13 @@ export default function ViewerPage() {
                 updateSelectedMatch={updateSelectedMatch}
             />
         )
+    } else if (selectedTeam) {
+        return (
+            <TeamDetailView data={matchData?.matches.flatMap(
+                match => match.teams.filter(
+                    team => team.teamNumber == selectedTeam
+                ))} updateSelectedTeam={updateSelectedTeam} />
+        )
     } else {
         return (
             <>
@@ -79,7 +90,7 @@ export default function ViewerPage() {
                     <Button variant="bordered" onPress={() => setView(View.Teams)}>Teams</Button>
                 </ButtonGroup>
 
-                {view == View.Matches ? <MatchListView matchData={matchData} updateSelectedMatch={updateSelectedMatch}/> : <TeamListView />}
+                {view == View.Matches ? <MatchListView matchData={matchData} updateSelectedMatch={updateSelectedMatch} updateSelectedTeam={updateSelectedTeam}/> : <TeamListView />}
             </>
         )
     }

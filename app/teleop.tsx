@@ -23,7 +23,7 @@ export const Teleop = ({alliance, updateNotesAttempted, updatePark, humanPlayerA
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
 
-    const handleClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    const handleClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
         setX(e.pageX - offsetX);
         setY(e.pageY - offsetY);
     }

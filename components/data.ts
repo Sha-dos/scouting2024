@@ -21,7 +21,6 @@ export interface TeamMatchData {
     trap: Trap,
     amplify: number,
     defense: boolean,
-    pickupLocation: PickupLocation,
     defenseScale: DefenseRange,
     comments: string
 }
@@ -160,7 +159,6 @@ export const parseFirebaseData = (data: any): TeamMatchData[] => {
                 trap: parseTrap(teamData.trap),
                 amplify: teamData.amplify,
                 defense: teamData.defense,
-                pickupLocation: parsePickupLocation(teamData.pickupLocation),
                 defenseScale: parseDefenseScale(teamData.defenseScale),
                 comments: teamData.comments || ""
             };
@@ -328,23 +326,6 @@ const parseClimb = (climb: string | undefined): Climb => {
             return Climb.None;
         default:
             throw new Error("Invalid climb: " + climb);
-    }
-};
-
-const parsePickupLocation = (pickupLocation: string | undefined): PickupLocation => {
-    if (!pickupLocation) { return PickupLocation.None; }
-
-    switch (pickupLocation) {
-        case "None":
-            return PickupLocation.None;
-        case "Floor":
-            return PickupLocation.Floor;
-        case "Human Player":
-            return PickupLocation.HumanPlayer;
-        case "Both":
-            return PickupLocation.Both;
-        default:
-            throw new Error("Invalid pickup location: " + pickupLocation);
     }
 };
 
