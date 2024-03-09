@@ -1,12 +1,36 @@
 'use client';
 
-import {Alliance, Climb, Park, ScoreLocation, TeamMatchData, Trap} from "@/components/data";
+import {Alliance, Climb, Park, ScoreLocation, TeamData, TeamMatchData, Trap} from "@/components/data";
 import {Button} from "@nextui-org/button";
 import {Divider, Image} from "@nextui-org/react";
 import {useEffect, useRef, useState} from "react";
 import {ShootPoint} from "@/components/shot";
 
-export const TeamListView = () => {
+export const TeamListView = ({data}: { data: TeamMatchData[] }) => {
+    const [teams, setTeams] = useState<TeamData[] | null>(null)
+
+    useEffect(() => {
+        if (data) {
+            const uniqueTeams: any[] = [];
+            data.forEach(match => {
+                if (!uniqueTeams.includes(match.teamNumber)) {
+                    uniqueTeams.push(match.teamNumber);
+                }
+            });
+
+            const teamsData = uniqueTeams.map(teamNumber => {
+                const teamMatches = data.filter(match => match.teamNumber === teamNumber);
+                return {
+                    teamNumber,
+                    data: teamMatches
+                };
+            });
+            setTeams(teamsData);
+        }
+    }, [data]);
+
+    if (!teams) return (<></>)
+
     return (
         <h1>Team List View</h1>
     )

@@ -5,6 +5,11 @@ export interface Data {
     }[]
 }
 
+export interface TeamData {
+    teamNumber: number,
+    data: TeamMatchData[]
+}
+
 export interface TeamMatchData {
     teamNumber: number,
     matchNumber: number,
@@ -357,4 +362,8 @@ const parseAlliance = (alliance: string | undefined): Alliance => {
         default:
             return Alliance.Red
     }
+}
+
+Array.prototype.insert = function(index, ...items) {
+    this.splice(index, 0, ...items)
 }
