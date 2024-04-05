@@ -44,6 +44,7 @@ export default function DataPage() {
     return (
         <div className="flex gap-4">
             <Button variant="bordered" onPress={() => upload()}>Upload All</Button>
+            <Button onPress={() => localStorage.clear()}></Button>
             <h1>{"length: " + data?.matches.length}</h1>
         </div>
     );
