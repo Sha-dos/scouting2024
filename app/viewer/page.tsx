@@ -90,7 +90,7 @@ export default function ViewerPage() {
                     <Button variant="bordered" onPress={() => setView(View.Teams)}>Teams</Button>
                 </ButtonGroup>
 
-                {/*view == View.Matches ? <MatchListView matchData={matchData} updateSelectedMatch={updateSelectedMatch} updateSelectedTeam={updateSelectedTeam}/> : <TeamListView />*/}
+                {view == View.Matches ? <MatchListView matchData={matchData} updateSelectedMatch={updateSelectedMatch} updateSelectedTeam={updateSelectedTeam}/> : <TeamListView data={matchData?.matches.flatMap(match => match.teams)} />}
             </>
         )
     }

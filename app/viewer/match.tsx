@@ -118,6 +118,9 @@ const MatchView = ({matchNumber, teams, updateSelectedMatch, updateSelectedTeam}
 
                                 <a className="w-16">{team.climb}</a>
                                 <Divider orientation="vertical"/>
+
+                                <a>{team.comments}</a>
+                                <Divider orientation="vertical"/>
                             </>
                         }</Button>
                     </div>

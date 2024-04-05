@@ -6,7 +6,7 @@ import {Divider, Image} from "@nextui-org/react";
 import {useEffect, useRef, useState} from "react";
 import {ShootPoint} from "@/components/shot";
 
-export const TeamListView = ({data}: { data: TeamMatchData[] }) => {
+export const TeamListView = ({data}: { data: TeamMatchData[] | undefined }) => {
     const [teams, setTeams] = useState<TeamData[] | null>(null)
 
     useEffect(() => {
