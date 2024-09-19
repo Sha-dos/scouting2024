@@ -275,7 +275,8 @@ const parsePark = (park: string): Park => {
         case "None":
             return Park.None;
         default:
-            throw new Error("Invalid park: " + park);
+            //throw new Error("Invalid park: " + park);
+            return Park.None
     }
 };
 
